@@ -28,21 +28,7 @@ for i in  lineas:
 #print total[0]
 matriz = np.array(total)
 Matriz = matriz.transpose()
-
-#print Matriz[1]
-#print Matriz.shape[0]
-
-var=[]
-for i in range(Matriz.shape[0]):
-	prom = np.mean(Matriz[i,:])
-	varr = 0.0
-	for j in range(Matriz.shape[1]):
-		Matriz[i,j] = (Matriz[i,j]- prom)/(0.1*(Matriz.shape[1]-1) )
-		varr += (Matriz[i,j]**2)
-	var.append(varr**0.5)
-	for j in range(Matriz.shape[1]):
-		Matriz[i,j] = Matriz[i,j]/(varr**0.5)
-		
+	
 
 covar=np.ones((Matriz.shape[0] , Matriz.shape[0] ))
 for i in range(Matriz.shape[0]):
@@ -58,28 +44,7 @@ print "---------fila 0 real"
 print covar[0:2]
 
 
-diagonaliz = np.linalg.eig(covar)
-#vect = np.matmul(Matriz.transpose,diagonaliz[1][0])
-#print vect
 
-valores = diagonaliz[0]
-vectores = diagonaliz[1]
-for i in range(valores.shape[0]):
-	print "_____________",i," :", "\n","----valor= ", valores[i],"\n","----Vector= ", vectores[i]
-
-print " "
-print "Los vectores mas importantes son aquellos que estan relacionados con los valores propios de mayor magnitud; puesto que significa que estos vectores son una base mas apropiada para escribir los datos"
-
-# estos son los datos proyectados en los autovectores, solo se  multiplican las matrices
-
-nuevaM = np.matmul(vectores , Matriz)
-PC1 = vectores[19]
-PC2 = vectores[20]
-
-proy1 = np.matmul(PC1.transpose , Matriz)
-proy2 = np.matmul(PC2.transpose , Matriz)
-print proy1[0:2]
-print proy2[0:2]
 
 
 
