@@ -1,19 +1,27 @@
 import matplotlib.pyplot as plt
 import numpy as np
 #import pandas as pd
+from scipy.fftpack import fft, ifft, fftfreq
 
-def expo(t, puntos, frec):
+
+def expo(t, puntos, w):
 	#parte exponencial
-	e = np.exp((-2.0j*t*np.pi*frec)/(puntos*1.0))
-	cs = np.cos((-2.0*t*np.pi*frec)/(puntos*1.0)) + (1j*np.sin((-2.0*t*np.pi*frec)/(puntos*1.0)) )
-	return cs
+	e = np.exp((-np.pi)*t*2j*w/(1.0*puntos))
+	cs = np.cos((-2.0*t*np.pi*w)/(puntos*1.0)) + (1j*np.sin((-2.0*t*np.pi*w)/(puntos*1.0)) )
+	return e
 
-def fourier (funcion , puntos, frec):
+
+def fourier (funcion , puntos, w):
+	lista = []
 	suma = 0.0
-	for i in range(0,puntos-1):
-	#	suma += funcion[i] * expo(i, puntos, frec)
-		suma += funcion * expo(i, puntos, frec)
-	return suma
+	for j in range (0,len(funcion)):
+		for w in range(0,puntos-1):
+			suma += funcion[j] * expo(j, puntos, w)
+		lista.append(suma)
+		suma= 0.0
+	return lista
+	#return lista
+
 
 #prueba con array
 lista = np.linspace(1.0 ,10.0 ,30)
@@ -22,13 +30,15 @@ Flista = fourier(lista, 30 , 1.0)
 #print "  "
 #print Flista
 
-#archivo = np.loadtxt("signal.dat")
-#print archivo
+
+#------- intento con Pandas
 #df = pd.read_csv('datos.txt', names=['x','y']) 
 #print df.head() 
 #x = df.loc[:, ['x']].values 
 #y = df.loc[:,['y']].values
 
+
+#-------- intento solo con readlines
 #archivo = open("signal.dat",'rw')
 #nuevo = open("signall.dat",'w')
 #for mensaje in archivo:
@@ -36,19 +46,46 @@ Flista = fourier(lista, 30 , 1.0)
  	#mensaje.replace(',', ' ')
 	#nuevo.write(mensaje)
 
+#------- intento con openfile
 #mensaje = archivo.readline()
 #mensaje.replace(",", "")
 #nuevo.write(mensaje)
-
-
 #archivo.close()
 #nuevo.close()
 
-#f=np.opentxt("signal.dat") 
-#print f
+
   
 datos = np.genfromtxt("signal.dat", dtype=None,names = ['x','y'], delimiter=",")
-print datos
+x = np.genfromtxt("signal.dat", usecols=0)
+y = np.genfromtxt("signal.dat", usecols=2) #la columna uno son las comas
+print "longit. datos: ", len(x)
+#print y
+#print datos
+#---------------------------------------------------------------------------------
+#plt.figure()
+#plt.plot(x,y)
+#plt.savefig("ArguelloDiego_signal.pdf")
+#plt.close()
+
+
+print fourier(y , 10 , 1)[0:3]
+
+Flista = fourier(y, 10, 1)
+real = fft(y)
+freq = fftfreq(512,1)
+print real[0:3]
+#print Flista[0:3]
+
+plt.plot(freq,real)
+plt.xlim(-0.1, 0.1)
+plt.show()
+plt.plot(freq,Flista)
+plt.show()
+
+
+plt.xlim(-5, 5)
+plt.savefig("ArguelloDiego_TF.pdf")
+
 
 
 
