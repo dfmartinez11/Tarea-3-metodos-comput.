@@ -86,6 +86,8 @@ plt.figure()
 plt.scatter(proy1, proy2)
 plt.savefig("ArguelloDiego_PCA.pdf")
 
+print "Hacer este procedimiento permite reconocer cúales son los datos de mayor interes de las 32 variables tomadas y por tanto aquellos desde los que es mas facil que se encuentren relaciones entre las variables de los datos tomados. Esto resulta muy util en este tipo de casos en los que la cantidad de variables es tan alta"
+
 
 
 
