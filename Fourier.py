@@ -58,35 +58,45 @@ Flista = fourier(lista, 30 , 1.0)
 datos = np.genfromtxt("signal.dat", dtype=None,names = ['x','y'], delimiter=",")
 x = np.genfromtxt("signal.dat", usecols=0)
 y = np.genfromtxt("signal.dat", usecols=2) #la columna uno son las comas
-print "longit. datos: ", len(x)
+
+#print "longit. datos: ", len(x)
 #print y
 #print datos
 #---------------------------------------------------------------------------------
-#plt.figure()
-#plt.plot(x,y)
-#plt.savefig("ArguelloDiego_signal.pdf")
-#plt.close()
+plt.figure()
+plt.plot(x,y)
+plt.savefig("ArguelloDiego_signal.pdf")
+plt.close()
 
 
-print fourier(y , 10 , 1)[0:3]
+#print fourier(y , 10 , 1)[0:3]
 
 Flista = fourier(y, 10, 1)
 real = fft(y)
-freq = fftfreq(512,1)
-print real[0:3]
+frecu = fftfreq(512,1)
+#print real[0:3]
 #print Flista[0:3]
 
-plt.plot(freq,real)
+plt.plot(frecu,real)
 plt.xlim(-0.1, 0.1)
-plt.show()
-plt.plot(freq,Flista)
+#plt.show()
+#plt.plot(frecu,Flista)
 plt.show()
 
 
 plt.xlim(-5, 5)
 plt.savefig("ArguelloDiego_TF.pdf")
 
+real[frecu > 0.03] = 0
+real[frecu < -0.03] = 0
+#--------- solo para probar
+#plt.plot(frecu , real)
+#plt.xlim(-0.1,0.1)
+#plt.show()
 
-
+filtrada = np.fft.ifft(real)
+plt.plot(x , filtrada)
+plt.xlim(0.0,0.04)
+plt.savefig("ArguelloDiego_filtrada.pdf")
 
 
